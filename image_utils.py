@@ -30,4 +30,5 @@ def detection_edge(image_array):
     edge_y = convolve2d(gray, filter_y, mode='same', boundary='fill', fillvalue=0)
 
     # Edge magnitude
-    edge_mag = np.sqrt(edge_x**2 + edge**
+    edge_mag = np.sqrt(edge_x**2 + edge_y**2)
+    return edge_mag
