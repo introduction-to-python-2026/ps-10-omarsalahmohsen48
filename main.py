@@ -1,33 +1,30 @@
 # main.py
+
 import numpy as np
-from PIL import Image
 from skimage.filters import median
 from skimage.morphology import ball
-from image_utils import load_image, edge_detection
+from image_utils import image_load, detection_edge
+from PIL import Image
 
-# --- Configuration ---
-IMAGE_PATH = '.tests/lena.jpg'           # Updated input image path
-OUTPUT_IMAGE_NAME = 'my_edges.png'       # Output filename for the edge image
-MEDIAN_FILTER_SIZE = 3                    # Median filter size for noise suppression
-EDGE_DETECTION_THRESHOLD = 50             # Threshold for binary edge image
+# 1. טען את תמונת הצבע
+image_path = "your_image.png"  # כאן שים את מיקום התמונה שלך
+image = image_load(image_path)
 
-# --- Step 1: Load the original image ---
-original_image = load_image(IMAGE_PATH)
+# 2. סנן את הרעשים בעזרת פילטר חציוני
+clean_image = median(image, ball(3))
 
-if original_image is None:
-    raise FileNotFoundError(f"Failed to load image from {IMAGE_PATH}")
+# 3. זיהוי קצוות
+edge_image = detection_edge(clean_image)
 
-# --- Step 2: Noise suppression using a median filter ---
-clean_image = median(original_image, ball(MEDIAN_FILTER_SIZE))
+# 4. המרת המערך לבינארי (0 ו-255)
+threshold = np.mean(edge_image)  # אפשר גם לבחור סף אחר לפי הצורך
+binary_edge = (edge_image > threshold) * 255  # 0 או 255
 
-# --- Step 3: Detect edges ---
-edge_magnitude = edge_detection(clean_image)
+# 5. שמירת התמונה כ-PNG
+output_image = Image.fromarray(binary_edge.astype(np.uint8))
+output_image.save("edges_output.png")
 
-# --- Step 4: Convert edge magnitude to binary image ---
-edge_binary = (edge_magnitude > EDGE_DETECTION_THRESHOLD).astype(np.uint8) * 255
+# 6. הצגת התמונה
+output_image.show()
 
-# --- Step 5: Save the resulting binary edge image ---
-edge_image_pil = Image.fromarray(edge_binary)
-edge_image_pil.save(OUTPUT_IMAGE_NAME)
-
-print(f"Edge-detected image saved as '{OUTPUT_IMAGE_NAME}'")
+print("תהליך זיהוי הקצוות הסתיים. התמונה נשמרה בשם edges_output.png")
