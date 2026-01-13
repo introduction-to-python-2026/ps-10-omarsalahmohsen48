@@ -6,10 +6,10 @@ from skimage.morphology import ball
 from image_utils import load_image, edge_detection
 
 # --- Configuration ---
-IMAGE_PATH = '/content/astronaut.png'  # Path to your input image
-OUTPUT_IMAGE_NAME = 'my_edges.png'     # Output filename for the edge image
-MEDIAN_FILTER_SIZE = 3                  # Median filter size for noise suppression
-EDGE_DETECTION_THRESHOLD = 50           # Threshold for binary edge image
+IMAGE_PATH = '.tests/lena.jpg'           # Updated input image path
+OUTPUT_IMAGE_NAME = 'my_edges.png'       # Output filename for the edge image
+MEDIAN_FILTER_SIZE = 3                    # Median filter size for noise suppression
+EDGE_DETECTION_THRESHOLD = 50             # Threshold for binary edge image
 
 # --- Step 1: Load the original image ---
 original_image = load_image(IMAGE_PATH)
@@ -31,4 +31,3 @@ edge_image_pil = Image.fromarray(edge_binary)
 edge_image_pil.save(OUTPUT_IMAGE_NAME)
 
 print(f"Edge-detected image saved as '{OUTPUT_IMAGE_NAME}'")
-
