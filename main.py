@@ -1,4 +1,4 @@
-from image_utils import image_load, detection_edge
+from image_utils.py import image_load, detection_edge
 from skimage.filters import median
 from skimage.morphology import ball
 from PIL import Image
